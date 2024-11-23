@@ -31,18 +31,24 @@
             <div>
                 <h3 class="text-xl font-semibold text-gray-800 mb-4">Member Information</h3>
                 <ul class="list-none space-y-2">
-                    <li>
-                        <span class="font-medium text-gray-700">Borrowed By:</span> {{ $book->member->name }}
-                    </li>
-                    <li>
-                        <span class="font-medium text-gray-700">National ID:</span> {{ $book->member->national_id_number }}
-                    </li>
-                    <li>
-                        <span class="font-medium text-gray-700">Phone:</span> {{ $book->member->phone_number }}
-                    </li>
-                    <li>
-                        <span class="font-medium text-gray-700">Address:</span> {{ $book->member->address }}
-                    </li>
+                    @if ($book->member)
+                        <li>
+                            <span class="font-medium text-gray-700">Borrowed By:</span> {{ $book->member->name }}
+                        </li>
+                        <li>
+                            <span class="font-medium text-gray-700">National ID:</span> {{ $book->member->national_id_number }}
+                        </li>
+                        <li>
+                            <span class="font-medium text-gray-700">Phone:</span> {{ $book->member->phone_number }}
+                        </li>
+                        <li>
+                            <span class="font-medium text-gray-700">Address:</span> {{ $book->member->address }}
+                        </li>
+                    @else
+                        <li>
+                            <span class="font-medium text-gray-700">Borrowed By:</span> Tidak ada yang meminjam
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>

@@ -12,11 +12,33 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = BooksModel::with(['member', 'categories'])->get();
-        return view('books.index', compact('books'));
+        // Query awal untuk mengambil buku dengan relasi
+        $query = BooksModel::with(['member', 'categories']);
+
+        // Filter berdasarkan member
+        if ($request->has('member_id') && $request->member_id) {
+            $query->where('member_id', $request->member_id);
+        }
+
+        // Filter berdasarkan kategori
+        if ($request->has('category_id') && $request->category_id) {
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('id', $request->category_id);
+            });
+        }
+
+        // Ambil data buku berdasarkan filter
+        $books = $query->get();
+
+        // Ambil data members dan categories untuk dropdown filter
+        $members = MembersModel::all();
+        $categories = BookCategoriesModel::all();
+
+        return view('books.index', compact('books', 'members', 'categories'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -37,13 +59,13 @@ class BooksController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:books,title',
             'author' => 'required|string|max:255',
             'publisher' => 'required|string|max:255',
             'published_date' => 'required|date',
             'number_of_pages' => 'required|integer|min:1',
-            'member_id' => 'required|exists:members,id',
-            'categories' => 'required|array',
+            'member_id' => 'nullable|exists:members,id',
+            'categories' => 'array',
             'categories.*' => 'exists:book_categories,id',
         ]);
 
@@ -93,12 +115,12 @@ class BooksController extends Controller
     {
         // Validasi data
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:books,title,' . $id,
             'author' => 'required|string|max:255',
             'publisher' => 'required|string|max:255',
             'published_date' => 'required|date',
             'number_of_pages' => 'required|integer|min:1',
-            'member_id' => 'required|exists:members,id',
+            'member_id' => 'nullable|exists:members,id',
             'categories' => 'required|array',
             'categories.*' => 'exists:book_categories,id',
         ]);

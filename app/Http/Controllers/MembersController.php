@@ -33,8 +33,8 @@ class MembersController extends Controller
         // Validasi data
         $request->validate([
             'name' => 'required|string|max:255',
-            'national_id_number' => 'required|numberic|digits:16|unique:members,national_id_number',
-            'phone_number' => 'required|numeric|digits:12',
+            'national_id_number' => 'required|numeric|digits:16|unique:members,national_id_number',
+            'phone_number' => 'required|numeric|digits:12|unique:members,phone_number',
             'address' => 'required|string',
             'join_date' => 'required|date',
         ]);
@@ -78,8 +78,8 @@ class MembersController extends Controller
         // Validasi input
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'national_id_number' => 'required|numberic|digits:16|unique:members,national_id_number,' . $id,
-            'phone_number' => 'required|numeric|digits:12',
+            'national_id_number' => 'required|numeric|digits:16|unique:members,national_id_number,' . $id,
+            'phone_number' => 'required|numeric|digits:12|unique:members,phone_number,' . $id,
             'address' => 'required|string',
             'join_date' => 'required|date',
         ]);

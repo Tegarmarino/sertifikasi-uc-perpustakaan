@@ -67,9 +67,8 @@
             <div class="mb-4">
                 <label for="member_id" class="block text-gray-700 font-medium">Member</label>
                 <select name="member_id" id="member_id"
-                    class="mt-1 block w-full px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required>
-                    <option value="" disabled>Select a member</option>
+                    class="mt-1 block w-full px-4 py-2 border rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" {{ old('member_id', $book->member_id) === null ? 'selected' : '' }}>None</option>
                     @foreach ($members as $member)
                         <option value="{{ $member->id }}" {{ (old('member_id', $book->member_id) == $member->id) ? 'selected' : '' }}>
                             {{ $member->name }}
@@ -80,6 +79,7 @@
                     <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                 @enderror
             </div>
+
 
             <!-- Categories (Checkbox) -->
             <div class="mb-4">
